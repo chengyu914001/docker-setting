@@ -1,0 +1,30 @@
+version: '3.8'
+networks:
+  proxy:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+services:
+  redis:
+    image: redis
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis/data:/data
+    ports:
+      - ${redis_port}:6379
+    command: redis-server /usr/local/etc/redis/redis.conf
+    environment:
+      TZ: ${TZ}
+    networks:
+      proxy:
+        ipv4_address: ${redis_address}
+  redis-commander:
+    depends_on:
+      - redis
+    image: rediscommander/redis-commander
+    environment:
+    - REDIS_HOSTS=local:redis:6379
+    ports:
+    - ${redis_commander_port}:8081
+    networks:
+      - proxy

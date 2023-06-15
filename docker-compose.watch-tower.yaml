@@ -1,0 +1,14 @@
+version: '3.8'
+networks:
+  proxy:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+services:
+  watchtower:
+    image: containrrr/watchtower
+    environment: 
+        - TZ=Asia/Taipei
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --cleanup --run-once

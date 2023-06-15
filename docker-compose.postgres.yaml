@@ -1,0 +1,32 @@
+version: '3.8'
+networks:
+  proxy:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+services:
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: ${user}
+      POSTGRES_PASSWORD: ${pw}
+      TZ: ${TZ}
+    ports:
+      - ${postgres_port}:5432
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    networks:
+      proxy:
+        ipv4_address: ${postgres_address}
+  pgweb:
+    image: sosedoff/pgweb
+    ports: 
+      - ${pgweb_port}:8081
+    environment:
+      - DATABASE_URL=postgres://${user}:${pw}@postgres:${postgres_port}/postgres?sslmode=disable
+    depends_on:
+      - postgres
+    networks:
+      - proxy
