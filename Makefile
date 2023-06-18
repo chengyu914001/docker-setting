@@ -1,15 +1,15 @@
 CHROME=docker-compose.chrome.yaml
-DATA_SCIENCE=docker-compose.data-science.yaml
+GPU-JUPYTER=docker-compose.gpu-jupyter.yaml
 POSTGRES=docker-compose.postgres.yaml
 REDIS=docker-compose.redis.yaml
 WATCH_TOWER=docker-compose.watch-tower.yaml
 
 up:
-	@docker compose -f ${CHROME} -f ${DATA_SCIENCE} -f ${POSTGRES} -f ${REDIS} up -d
+	@docker compose -f ${CHROME} -f ${GPU-JUPYTER} -f ${POSTGRES} -f ${REDIS} up -d
 .PHONY: up
 
 down:
-	@docker compose -f ${CHROME} -f ${DATA_SCIENCE} -f ${POSTGRES} -f ${REDIS} down
+	@docker compose -f ${CHROME} -f ${GPU-JUPYTER} -f ${POSTGRES} -f ${REDIS} down
 .PHONY: down
 
 watchtower:
@@ -24,13 +24,13 @@ chrome-down:
 	@docker compose -f ${CHROME} down
 .PHONY: chrome-down
 
-data-science-up:
-	@docker compose -f ${DATA_SCIENCE} up -d
-.PHONY: data-science-up
+gpu-jupyter-up:
+	@docker compose -f ${GPU-JUPYTER} up -d
+.PHONY: gpu-jupyter-up
 
-data-science-down:
-	@docker compose -f ${DATA_SCIENCE} down
-.PHONY: data-science-down
+gpu-jupyter-down:
+	@docker compose -f ${GPU-JUPYTER} down
+.PHONY: gpu-jupyter-down
 
 postgres-up:
 	@docker compose -f ${POSTGRES} up -d

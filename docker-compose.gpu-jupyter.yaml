@@ -1,0 +1,28 @@
+version: "3.8"
+networks:
+  proxy:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+services:
+  gpu-jupyter:
+    image: cschranz/gpu-jupyter:v1.5_cuda-11.6_ubuntu-20.04
+    ports:
+      - ${gpu_jupyter_port}:8888
+    volumes:
+      - ./tensorflow:/home/jovyan
+    environment:
+      - GRANT_SUDO=yes
+      - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=${pw}
+    user:
+      "root"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities:
+              - gpu
+    restart: always
+    networks:
+      - proxy
