@@ -10,7 +10,8 @@ services:
     ports:
       - ${gpu_jupyter_port}:8888
     volumes:
-      - ./tensorflow:/home/jovyan
+      - ./jupyter/home:/home/jovyan
+      - ./jupyter/conda:/opt/conda/envs
     environment:
       - GRANT_SUDO=yes
       - JUPYTER_ENABLE_LAB=yes
