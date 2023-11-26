@@ -24,6 +24,6 @@ services:
           devices:
             - capabilities:
               - gpu
-    restart: always
+    # restart: always
     networks:
       - proxy
