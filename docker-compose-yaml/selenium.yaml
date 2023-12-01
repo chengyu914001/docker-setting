@@ -1,0 +1,37 @@
+version: "3.8"
+networks:
+  proxy:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+services:
+  chorme-vnc:
+    image: bonigarcia/novnc:1.1.0
+    depends_on:
+      - chrome-standalone
+    environment:
+      - VNC_SERVER=chrome-standalone:5900
+      - AUTOCONNECT=true
+      - VNC_PASSWORD=secret
+    ports:
+      - ${novnc_port}:6080
+
+  chrome-standalone:
+    image: selenium/standalone-chrome:latest
+    shm_size: 2gb
+    environment:
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+      - SE_NODE_MAX_SESSIONS=16
+      - SE_SCREEN_WIDTH=1920
+      - SE_SCREEN_HEIGHT=1080
+      - TZ=Asia/Taipei
+      - JAVA_OPTS=-Dwebdriver.chrome.whitelistedIps=
+    ports:
+      - ${chrome_connect_port}:4444
+      - ${chrome_diplay_port}:5900
+    volumes:
+      - ./selenium/shm:/dev/shm
+    networks:
+      proxy:
+        ipv4_address: ${chrome_address}
+  

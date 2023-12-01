@@ -1,4 +1,4 @@
-/postgres
-/redis
-/jupyter
-.env
+docker-compose-yaml/postgres
+docker-compose-yaml/redis
+docker-compose-yaml/jupyter
+docker-compose-yaml/.env

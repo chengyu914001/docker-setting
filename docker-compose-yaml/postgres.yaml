@@ -6,10 +6,10 @@ networks:
         - subnet: 172.20.0.0/24
 services:
   postgres:
-    image: postgres
+    image: postgres:15-bookworm
     restart: always
     environment:
-      POSTGRES_DB: postgres
+      POSTGRES_DB: airflow
       POSTGRES_USER: ${user}
       POSTGRES_PASSWORD: ${pw}
       TZ: ${TZ}
@@ -20,6 +20,12 @@ services:
     networks:
       proxy:
         ipv4_address: ${postgres_address}
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+      
   pgweb:
     image: sosedoff/pgweb
     ports: 

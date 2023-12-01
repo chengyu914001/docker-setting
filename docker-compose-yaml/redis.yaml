@@ -15,9 +15,16 @@ services:
     command: redis-server /usr/local/etc/redis/redis.conf
     environment:
       TZ: ${TZ}
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 30s
+      retries: 50
+      start_period: 30s
     networks:
       proxy:
         ipv4_address: ${redis_address}
+        
   redis-commander:
     depends_on:
       - redis

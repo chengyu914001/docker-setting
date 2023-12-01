@@ -1,17 +1,22 @@
-GPU_JUPYTER=docker-compose.gpu-jupyter.yaml
-POSTGRES=docker-compose.postgres.yaml
-REDIS=docker-compose.redis.yaml
-WATCH_TOWER=docker-compose.watch-tower.yaml
+DIR=docker-compose-yaml
 
-ifeq ($(args), all)
-	compose-file-item := -f $(GPU_JUPYTER) -f $(POSTGRES) -f $(REDIS)
-else ifeq ($(args), GPU-JUPYTER)
+GPU_JUPYTER=${DIR}/gpu-jupyter.yaml
+SELENIUM=${DIR}/selenium.yaml
+POSTGRES=${DIR}/postgres.yaml
+REDIS=${DIR}/redis.yaml
+WATCH_TOWER=${DIR}/watch-tower.yaml
+
+ifeq ($(project), all)
+	compose-file-item := -f $(GPU_JUPYTER) -f ${SELENIUM} -f $(POSTGRES) -f $(REDIS)
+else ifeq ($(project), jupyter)
 	compose-file-item := -f $(GPU_JUPYTER)
-else ifeq ($(args), POSTGRES)
+else ifeq ($(project), selenium)
+	compose-file-item := -f $(GPU_JUPYTER)
+else ifeq ($(project), postgres)
 	compose-file-item := -f $(POSTGRES)
-else ifeq ($(args), REDIS)
+else ifeq ($(project), redis)
 	compose-file-item := -f $(REDIS)
-else ifeq ($(args), WATCH_TOWER)
+else ifeq ($(project), watch-tower)
 	compose-file-item := -f $(WATCH_TOWER)
 endif
 
